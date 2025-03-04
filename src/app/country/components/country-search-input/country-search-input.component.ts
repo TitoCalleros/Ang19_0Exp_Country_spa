@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'country-search-input',
@@ -6,6 +6,8 @@ import { Component, output } from '@angular/core';
   templateUrl: './country-search-input.component.html',
 })
 export class CountrySearchInputComponent {
+
+  placeholder = input<string>('Buscar');
 
   searchText = output<string>();
 

@@ -1,3 +1,11 @@
 <country-search-input [placeholder]="'Buscar por capital del país'" (searchText)="onSearch($event)" />
 
-<country-list />
+<country-list [countries]="countries()" />
+
+@if (isError()) {
+  <div class="toast">
+    <div class="alert alert-info">
+      <span>{{ isError() }}</span>
+    </div>
+  </div>
+}

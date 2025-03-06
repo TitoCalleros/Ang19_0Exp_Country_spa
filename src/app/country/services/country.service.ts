@@ -16,13 +16,12 @@ export class CountryService {
 
   private http = inject(HttpClient);
   private queryCacheCapital = new Map<string, Country[]>();
+  private queryCacheCountry = new Map<string, Country[]>();
 
   searchByCapital( query: string ):Observable<Country[]> {
     query = query.toLowerCase();
 
     if (this.queryCacheCapital.has(query)) {
-      console.log('Valor de map');
-
       return of(this.queryCacheCapital.get(query) ?? []);
     }
 
@@ -39,9 +38,14 @@ export class CountryService {
   searchByCountry( query: string ) {
     query = query.toLowerCase();
 
+    if (this.queryCacheCountry.has(query)) {
+      return of(this.queryCacheCountry.get(query) ?? []);
+    }
+
     return this.http.get<RESTCountry[]>(`${ API_URL }/name/${ query }`)
     .pipe(
       map( CountryMapper.mapRestCountryArrayToCountryArray ),
+      tap( (countries) => this.queryCacheCountry.set(query, countries)),
       delay(2000),
       catchError( () => {
         return throwError(() => new Error('No se pudo obtener países con ese nombre'))

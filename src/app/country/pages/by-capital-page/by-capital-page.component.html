@@ -1,13 +1,13 @@
 <country-search-input [placeholder]="'Buscar por capital del país'" (searchText)="query.set($event)" />
 
-@if (countryResource.hasValue()) {
-  <country-list [countries]="countryResource.value()" />
-}
+<!-- @if (countryResource.hasValue()) { -->
+  <country-list [countries]="countryResource.value() ?? []" [isLoading]="countryResource.isLoading()" [errorMessage]="countryResource.error()" [isEmpty]="countryResource.value()?.length === 0"/>
+<!-- } -->
 
-@if (countryResource.error()) {
+<!-- @if (countryResource.error()) {
   <div class="toast">
     <div class="alert alert-info">
       <span>{{ countryResource.error() }}</span>
     </div>
   </div>
-}
+} -->

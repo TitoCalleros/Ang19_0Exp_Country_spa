@@ -1,11 +1,11 @@
+import { Country } from './../interfaces/country.interface';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { catchError, delay, map, Observable, of, throwError } from 'rxjs';
+import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
 
 import { RESTCountry } from '../interfaces/rest-countries.interface';
 import { CountryMapper } from '../mappers/country.mapper';
-import { Country } from '../interfaces/country.interface';
 
 const API_URL = 'https://restcountries.com/v3.1';
 
@@ -15,15 +15,21 @@ const API_URL = 'https://restcountries.com/v3.1';
 export class CountryService {
 
   private http = inject(HttpClient);
+  private queryCacheCapital = new Map<string, Country[]>();
 
   searchByCapital( query: string ):Observable<Country[]> {
     query = query.toLowerCase();
 
-    console.log(`Emitiendo valor: ${ query }`);
+    if (this.queryCacheCapital.has(query)) {
+      console.log('Valor de map');
+
+      return of(this.queryCacheCapital.get(query) ?? []);
+    }
 
     return this.http.get<RESTCountry[]>(`${ API_URL }/capital/${ query }`)
     .pipe(
       map( CountryMapper.mapRestCountryArrayToCountryArray ),
+      tap( (countries) => this.queryCacheCapital.set(query, countries)),
       catchError( () => {
         return throwError(() => new Error('No se pudo obtener países con ese query'))
       })

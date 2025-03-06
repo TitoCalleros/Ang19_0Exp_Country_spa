@@ -31,6 +31,35 @@
           </th>
         </tr>
       }
+
+      <!-- Cuando se presentan errores -->
+      @if (errorMessage()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            {{ errorMessage() }}
+          </td>
+        </tr>
+      }
+
+      <!-- Sin resultados del servicio -->
+      @if (countries().length === 0 && !isLoading() && !errorMessage()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            No se encontraron resultados
+          </td>
+        </tr>
+      }
+
+      <!-- Mientras se realiza la carga del servicio -->
+      @if (isLoading()) {
+        <tr>
+          <td colspan="8" class="text-center">
+            <span>Cargando  </span>
+            <span class="loading loading-spinner loading-sm"></span>
+          </td>
+        </tr>
+      }
+
     </tbody>
   </table>
 </section>

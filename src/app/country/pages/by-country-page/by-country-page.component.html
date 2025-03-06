@@ -1,3 +1,13 @@
-<country-search-input [placeholder]="'Buscar por nombre del país'" (searchText)="onSearch($event)" />
+<country-search-input [placeholder]="'Buscar por nombre del país'" (searchText)="query.set($event)" />
 
-<country-list [countries]="countries()" />
+@if (countryResource.hasValue()) {
+  <country-list [countries]="countryResource.value()" />
+}
+
+@if (countryResource.error()) {
+  <div class="toast">
+    <div class="alert alert-info">
+      <span>{{ countryResource.error() }}</span>
+    </div>
+  </div>
+}

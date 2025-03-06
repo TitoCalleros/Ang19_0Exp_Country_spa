@@ -13,6 +13,9 @@ export class CountryMapper
       name: restCountry.name.common,
       population: restCountry.population,
       nameInSpanish: restCountry.translations['spa'].common ?? 'No Spanish name',
+      translations: restCountry.translations,
+      region: restCountry.region,
+      subregion: restCountry.subregion,
     };
   }
 

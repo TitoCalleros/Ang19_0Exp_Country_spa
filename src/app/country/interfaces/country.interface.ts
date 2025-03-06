@@ -6,4 +6,12 @@ export interface Country {
   capital: string;
   population: number;
   nameInSpanish: string;
+  translations: { [key: string]: Translation };
+  region: string;
+  subregion: string;
+}
+
+export interface Translation {
+  official: string;
+  common:   string;
 }

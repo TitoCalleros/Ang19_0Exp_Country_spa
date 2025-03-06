@@ -27,10 +27,11 @@
             </span>
           </th>
           <th>
-            <a href="" class="link-primary cursor-pointer">Más información</a>
+            <a [routerLink]="['/country/by', country.cca2]" class="link-primary cursor-pointer">Más información</a>
           </th>
         </tr>
       }
     </tbody>
   </table>
 </section>
+

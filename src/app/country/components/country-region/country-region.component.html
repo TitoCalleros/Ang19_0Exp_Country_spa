@@ -1,0 +1,9 @@
+<h3 class="text-lg mx-4">Seleccione una región</h3>
+<section class="row mt-2 mx-4">
+  <div class="flex-col">
+    @for (region of regions; track region) {
+      <button class="btn btn-outline mr-2 w-[100px]" [class.btn-primary]="selectedRegion() === region" (click)="setRegion(region)">{{ region }}</button>
+    }
+  </div>
+
+</section>

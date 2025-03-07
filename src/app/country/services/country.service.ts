@@ -17,6 +17,7 @@ export class CountryService {
   private http = inject(HttpClient);
   private queryCacheCapital = new Map<string, Country[]>();
   private queryCacheCountry = new Map<string, Country[]>();
+  private queryCacheRegion = new Map<string, Country[]>();
 
   searchByCapital( query: string ):Observable<Country[]> {
     query = query.toLowerCase();
@@ -61,6 +62,32 @@ export class CountryService {
       delay(2000),
       catchError( () => {
         return throwError(() => new Error('No se pudo obtener países con ese código'))
+      })
+    );
+  }
+
+  searchCountryByRegion( region: string ) {
+    region = region.toLowerCase();
+
+    if (this.queryCacheRegion.has(region)) {
+      console.log('Valor por caché');
+
+      return of(this.queryCacheRegion.get(region) ?? []);
+    }
+
+    return this.http.get<RESTCountry[]>(`${ API_URL }/region/${region}`)
+    .pipe(
+      map( CountryMapper.mapRestCountryArrayToCountryArray ),
+      tap( (countries) => {
+        if (countries.length > 0) {
+          this.queryCacheRegion.set(region, countries)
+        }
+      }),
+
+      catchError( (error) => {
+        console.log(error);
+
+        return throwError(() => new Error('No se pudo obtener países de esa region'))
       })
     );
   }
